@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Computer Graphics Homework 2: OpenGL Vertex array object</title>
+<!-- 2017-11-17 Fri 18:33 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Ali Mehmandoost (963624020)" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Computer Graphics Homework 2: OpenGL Vertex array object</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. What is Vertex array object</a></li>
+<li><a href="#sec-2">2. Whats the difference between Vertex array Object and Vertex Buffer object</a></li>
+<li><a href="#sec-3">3. Creating A Vertex array object</a>
+<ul>
+<li><a href="#sec-3-1">3.1. glEnableClientState</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Specifies the location and data format</a>
+<ul>
+<li><a href="#sec-4-1">4.1. glVertexPointer</a></li>
+<li><a href="#sec-4-2">4.2. glColorPointer</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5. Render primitives from VAO:</a>
+<ul>
+<li><a href="#sec-5-1">5.1. glDrawArrays</a></li>
+<li><a href="#sec-5-2">5.2. glDrawElements</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6. Example</a></li>
+</ul>
+</div>
+</div>
+<p>
+\newpage
+</p>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> What is Vertex array object</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object">https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object</a>
+</p>
+
+<p>
+A Vertex Array Object (VAO) is an OpenGL Object that stores all of the state needed to supply vertex data. It stores the format of the vertex data as well as the Buffer Objects providing the vertex data arrays. Note that VAOs do not copy, freeze or store the contents of the referenced buffers if you change any of the data in the buffers referenced by an existing VAO, those changes will be seen by users of the VAO.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Whats the difference between Vertex array Object and Vertex Buffer object</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<a href="http://www.songho.ca/opengl/gl_vbo.html">http://www.songho.ca/opengl/gl_vbo.html</a>
+</p>
+
+<p>
+Vertex array functions are in the client state [RAM] and the data in the arrays must be re-sent to the server each time when it is referenced.
+But Vertex buffer object (VBO) creates "buffer objects" for vertex attributes in high-performance memory on the server side and provides same access functions to reference the arrays, which are used in vertex arrays, such as glVertexPointer(), glNormalPointer(), glTexCoordPointer(), etc. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Creating A Vertex array object</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+To create a Vertex array object first we need to enable the vertex array we want to use with glEnableClientState.
+</p>
+</div>
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> glEnableClientState</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+glEnableClientState and glDisableClientState enable or disable individual client-side capabilities. By default, all client-side capabilities are disabled. Both glEnableClientState and glDisableClientState take a single argument, cap, which can assume one of the following values:
+</p>
+</div>
+
+<div id="outline-container-sec-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> GL_COLOR_ARRAY</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+If enabled, the color array is enabled for writing and used during rendering when glArrayElement, glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays, or glMultiDrawElements is called.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2"><span class="section-number-4">3.1.2</span> GL_EDGE_FLAG _ARRAY</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+If enabled, the edge flag array is enabled for writing and used during rendering when glArrayElement, glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays, or glMultiDrawElements is called.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-3" class="outline-4">
+<h4 id="sec-3-1-3"><span class="section-number-4">3.1.3</span> GL_FOG_COORD _ARRAY</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<p>
+If enabled, the fog coordinate array is enabled for writing and used during rendering when glArrayElement, glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays, or  glMultiDrawElements is called.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-4" class="outline-4">
+<h4 id="sec-3-1-4"><span class="section-number-4">3.1.4</span> GL_INDEX_ARRAY</h4>
+<div class="outline-text-4" id="text-3-1-4">
+<p>
+If enabled, the index array is enabled for writing and used during rendering when glArrayElement, glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays, or glMultiDrawElements is called.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-5" class="outline-4">
+<h4 id="sec-3-1-5"><span class="section-number-4">3.1.5</span> GL_NORMAL_ARRAY</h4>
+<div class="outline-text-4" id="text-3-1-5">
+<p>
+If enabled, the normal array is enabled for writing and used during rendering when glArrayElement, glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays, or glMultiDrawElements is called.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-6" class="outline-4">
+<h4 id="sec-3-1-6"><span class="section-number-4">3.1.6</span> GL _SECONDARY_COLOR_ARRAY</h4>
+<div class="outline-text-4" id="text-3-1-6">
+<p>
+If enabled, the secondary color array is enabled for writing and used during rendering when glArrayElement, glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays, or glMultiDrawElements is called. 
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-7" class="outline-4">
+<h4 id="sec-3-1-7"><span class="section-number-4">3.1.7</span> GL_TEXTURE_COORD_ARRAY</h4>
+<div class="outline-text-4" id="text-3-1-7">
+<p>
+If enabled, the texture coordinate array is enabled for writing and used  during rendering when glArrayElement, glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays, or glMultiDrawElements is called.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-8" class="outline-4">
+<h4 id="sec-3-1-8"><span class="section-number-4">3.1.8</span> GL_VERTEX_ARRAY</h4>
+<div class="outline-text-4" id="text-3-1-8">
+<p>
+If enabled, the vertex array is enabled for writing and used during rendering when glArrayElement, glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays, or glMultiDrawElements is called.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Specifies the location and data format</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+After Creating VAO we need to specifies the location and data format of Array with one of the following functions:
+</p>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> glVertexPointer</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+<a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertexPointer.xml">https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertexPointer.xml</a>
+</p>
+
+
+<p>
+void glVertexPointer(GLint size,  GLenum type,  GLsizei stride,  const GLvoid * pointer);
+</p>
+</div>
+<div id="outline-container-sec-4-1-1" class="outline-4">
+<h4 id="sec-4-1-1"><span class="section-number-4">4.1.1</span> Parameters</h4>
+<div class="outline-text-4" id="text-4-1-1">
+</div><ol class="org-ol"><li><a id="sec-4-1-1-1" name="sec-4-1-1-1"></a>size<br  /><div class="outline-text-5" id="text-4-1-1-1">
+<p>
+Specifies the number of coordinates per vertex. Must be 2, 3, or 4. The initial value is 4.
+</p>
+</div>
+</li>
+<li><a id="sec-4-1-1-2" name="sec-4-1-1-2"></a>type<br  /><div class="outline-text-5" id="text-4-1-1-2">
+<p>
+Specifies the data type of each coordinate in the array. Symbolic constants GL_SHORT, GL_INT, GL_FLOAT, or GL_DOUBLE are accepted. The initial value is GL_FLOAT.
+</p>
+</div>
+</li>
+<li><a id="sec-4-1-1-3" name="sec-4-1-1-3"></a>stride<br  /><div class="outline-text-5" id="text-4-1-1-3">
+<p>
+Specifies the byte offset between consecutive vertices. If stride is 0, the vertices are understood to be tightly packed in the array. The initial value is 0.
+</p>
+</div>
+</li>
+<li><a id="sec-4-1-1-4" name="sec-4-1-1-4"></a>pointer<br  /><div class="outline-text-5" id="text-4-1-1-4">
+<p>
+Specifies a pointer to the first coordinate of the first vertex in the array. The initial value is 0.
+</p>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-4-1-2" class="outline-4">
+<h4 id="sec-4-1-2"><span class="section-number-4">4.1.2</span> Description</h4>
+<div class="outline-text-4" id="text-4-1-2">
+<p>
+glVertexPointer specifies the location and data format of an array of vertex coordinates to use when rendering. size specifies the number of coordinates per vertex, and must be 2, 3, or 4. type specifies the data type of each coordinate, and stride specifies the byte stride from one vertex to the next, allowing vertices and attributes to be packed into a single array or stored in separate arrays.
+If a non-zero named buffer object is bound to the GL_ARRAY_BUFFER target  while a vertex array is specified, pointer is treated as a byte offset into the buffer object's data store. Also, the buffer object binding (GL_ARRAY_BUFFER_BINDING) is saved as vertex array client-side state (GL_VERTEX_ARRAY_BUFFER_BINDING). When a vertex array is specified, size, type, stride, and pointer are saved as client-side state, in addition to the current vertex array buffer object binding.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> glColorPointer</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+<a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glColorPointer.xml">https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glColorPointer.xml</a>
+</p>
+
+
+<p>
+void glColorPointer(GLint size,  GLenum type,  GLsizei stride,  const GLvoid * pointer);
+</p>
+</div>
+<div id="outline-container-sec-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1"><span class="section-number-4">4.2.1</span> Parameters</h4>
+<div class="outline-text-4" id="text-4-2-1">
+</div><ol class="org-ol"><li><a id="sec-4-2-1-1" name="sec-4-2-1-1"></a>size<br  /><div class="outline-text-5" id="text-4-2-1-1">
+<p>
+Specifies the number of components per color. Must be 3 or 4. The initial value is 4.
+</p>
+</div>
+</li>
+<li><a id="sec-4-2-1-2" name="sec-4-2-1-2"></a>type<br  /><div class="outline-text-5" id="text-4-2-1-2">
+<p>
+Specifies the data type of each color component in the array. Symbolic constants GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT, GL_FLOAT, and GL_DOUBLE are accepted. The initial value is GL_FLOAT.
+</p>
+</div>
+</li>
+<li><a id="sec-4-2-1-3" name="sec-4-2-1-3"></a>stride<br  /><div class="outline-text-5" id="text-4-2-1-3">
+<p>
+Specifies the byte offset between consecutive colors. If stride is 0, the colors are understood to be tightly packed in the array. The initial value is 0. 
+</p>
+</div>
+</li>
+<li><a id="sec-4-2-1-4" name="sec-4-2-1-4"></a>pointer<br  /><div class="outline-text-5" id="text-4-2-1-4">
+<p>
+Specifies a pointer to the first component of the first color element in the array. The initial value is 0.
+</p>
+</div>
+</li></ol>
+</div>
+
+<div id="outline-container-sec-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2"><span class="section-number-4">4.2.2</span> Description</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+glColorPointer specifies the location and data format of an array of color components to use when rendering. size specifies the number of components per color, and must be 3 or 4. type specifies the data type of each color component, and stride specifies the byte stride from one color to the next, allowing vertices and attributes to be packed into a single array or stored in separate arrays. If a non-zero named buffer object is bound to the GL_ARRAY_BUFFER target while a color array is specified, pointer is treated as a byte offset into the buffer object's data store. Also, the buffer object binding is saved as color vertex array client-side state. When a color array is specified,size, type, stride, and pointer are saved as client-side state, in addition to the current vertex array buffer object binding.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Render primitives from VAO:</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+After creating vertex attributes in VAO we can render them with one of the following functions:
+</p>
+</div>
+
+<div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> glDrawArrays</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+<a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDrawArrays.xml">https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDrawArrays.xml</a>
+void glDrawArrays(GLenum mode,  GLint first,  GLsizei count); 
+</p>
+</div>
+<div id="outline-container-sec-5-1-1" class="outline-4">
+<h4 id="sec-5-1-1"><span class="section-number-4">5.1.1</span> Parameters</h4>
+<div class="outline-text-4" id="text-5-1-1">
+</div><ol class="org-ol"><li><a id="sec-5-1-1-1" name="sec-5-1-1-1"></a>mode<br  /><div class="outline-text-5" id="text-5-1-1-1">
+<p>
+Specifies what kind of primitives to render. Symbolic constants GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_QUAD_STRIP, GL_QUADS, and GL_POLYGON are accepted.
+</p>
+</div>
+</li>
+<li><a id="sec-5-1-1-2" name="sec-5-1-1-2"></a>first<br  /><div class="outline-text-5" id="text-5-1-1-2">
+<p>
+Specifies the starting index in the enabled arrays.
+</p>
+</div>
+</li>
+<li><a id="sec-5-1-1-3" name="sec-5-1-1-3"></a>count<br  /><div class="outline-text-5" id="text-5-1-1-3">
+<p>
+Specifies the number of indices to be rendered.
+</p>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-5-1-2" class="outline-4">
+<h4 id="sec-5-1-2"><span class="section-number-4">5.1.2</span> Description</h4>
+<div class="outline-text-4" id="text-5-1-2">
+<p>
+glDrawArrays specifies multiple geometric primitives with very few subroutine calls. Instead of calling a GL procedure to pass each individual vertex, normal, texture coordinate, edge flag, or color, you can prespecify separate arrays of vertices, normals, and colors and use them to construct a sequence of primitives with a single call to glDrawArrays.
+</p>
+
+<p>
+When glDrawArrays is called, it uses count sequential elements from each enabled array to construct a sequence of geometric primitives, beginning with element first. mode specifies what kind of primitives are constructed and how the array elements construct those primitives. If GL_VERTEX_ARRAY is not enabled, no geometric primitives are generated. 
+</p>
+
+<p>
+Vertex attributes that are modified by glDrawArrays have an unspecified value after glDrawArrays returns. For example, if GL_COLOR_ARRAY is enabled, the value of the current color is undefined after glDrawArrays executes. Attributes that aren't modified remain well defined.         
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> glDrawElements</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+<a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDrawElements.xml">https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDrawElements.xml</a>
+void glDrawElements(GLenum mode,  GLsizei count,  GLenum type,  const GLvoid * indices);
+</p>
+</div>
+<div id="outline-container-sec-5-2-1" class="outline-4">
+<h4 id="sec-5-2-1"><span class="section-number-4">5.2.1</span> Parameters</h4>
+<div class="outline-text-4" id="text-5-2-1">
+</div><ol class="org-ol"><li><a id="sec-5-2-1-1" name="sec-5-2-1-1"></a>mode<br  /><div class="outline-text-5" id="text-5-2-1-1">
+<p>
+Specifies what kind of primitives to render. Symbolic constants GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_QUAD_STRIP, GL_QUADS, and GL_POLYGON are accepted.
+</p>
+</div>
+</li>
+<li><a id="sec-5-2-1-2" name="sec-5-2-1-2"></a>count<br  /><div class="outline-text-5" id="text-5-2-1-2">
+<p>
+Specifies the number of elements to be rendered.
+</p>
+</div>
+</li>
+<li><a id="sec-5-2-1-3" name="sec-5-2-1-3"></a>type<br  /><div class="outline-text-5" id="text-5-2-1-3">
+<p>
+Specifies the type of the values in indices. Must be one of GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT, or GL_UNSIGNED_INT.
+</p>
+</div>
+</li>
+<li><a id="sec-5-2-1-4" name="sec-5-2-1-4"></a>indices<br  /><div class="outline-text-5" id="text-5-2-1-4">
+<p>
+Specifies a pointer to the location where the indices are stored.
+</p>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-5-2-2" class="outline-4">
+<h4 id="sec-5-2-2"><span class="section-number-4">5.2.2</span> Description</h4>
+<div class="outline-text-4" id="text-5-2-2">
+<p>
+glDrawElements specifies multiple geometric primitives with very few subroutine calls. Instead of calling a GL function to pass each individual vertex, normal, texture coordinate, edge flag, or color, you can prespecify separate arrays of vertices, normals, and so on, and use them to construct a sequence of primitives with a single call to glDrawElements.
+</p>
+
+<p>
+When glDrawElements is called, it uses count sequential elements from an enabled array, starting at indices to construct a sequence of geometric primitives. mode specifies what kind of primitives are constructed and how the array elements construct these primitives. If more than one array is enabled, each is used. If GL_VERTEX_ARRAY is not enabled, no geometric primitives are constructed.
+</p>
+
+<p>
+Vertex attributes that are modified by glDrawElements have an unspecified value after glDrawElements returns. For example, if GL_COLOR_ARRAY is enabled, the value of the current color is undefined after glDrawElements executes. Attributes that aren't modified maintain their previous values. 
+</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Example</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Lets Draw a color triangle.
+</p>
+
+<p>
+<i><a href="https://github.com/Mehmandoost/ui36cg/tree/master/HW2">https://github.com/Mehmandoost/ui36cg/tree/master/HW2</a></i>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-cpp"><span style="color: #bc6ec5;">#include</span> <span style="color: #2d9574;">&lt;GL/glew.h&gt;</span>
+<span style="color: #bc6ec5;">#include</span> <span style="color: #2d9574;">&lt;GL/glut.h&gt;</span>
+
+
+<span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">handler_display</span>();
+
+<span style="color: #ce537a; font-weight: bold;">float</span> <span style="color: #7590db;">vertices</span>[] = {                     \
+        -1.0, -1.0, 0.0, \
+        1.0, -1.0, 0.0,  \
+        0.0, 1.0, 0.0 };
+
+<span style="color: #ce537a; font-weight: bold;">float</span> <span style="color: #7590db;">colors</span>[] = {                  \
+        1.0, 0.0, 0.0, 1.0, \
+        0.0, 1.0, 0.0, 1.0, \
+        0.0, 0.0, 1.0, 1.0 };
+
+<span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #bc6ec5; font-weight: bold;">main</span>(<span style="color: #ce537a; font-weight: bold;">int</span> <span style="color: #7590db;">argc</span>, <span style="color: #ce537a; font-weight: bold;">char</span> **<span style="color: #7590db;">argv</span>) {
+
+        glutInit(&amp;argc, argv);
+        glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
+
+        glutInitWindowSize(500, 500);
+        glutInitWindowPosition(0, 0);
+
+        glutCreateWindow(<span style="color: #2d9574;">"VAO Test"</span>);
+
+        glutDisplayFunc(handler_display);
+        glutMainLoop();
+
+}
+
+
+<span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">handler_display</span>() {
+
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glVertexPointer(3, GL_FLOAT, 0, vertices);
+        glEnableClientState(GL_VERTEX_ARRAY);
+
+        glColorPointer(4, GL_FLOAT, 0, colors);
+        glEnableClientState(GL_COLOR_ARRAY);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_COLOR_ARRAY);
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: November 17, 2017</p>
+<p class="author">Author: Ali Mehmandoost (963624020)</p>
+<p class="date">Created: 2017-11-17 Fri 18:33</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
